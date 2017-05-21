@@ -19,7 +19,7 @@ Of course you are free to clone the repo and build it yourself.
 
 ## How to use it?
 
-**Please also read the section with other important infotmation below!**
+**Please also read the section with other important information below!**
 
 To use the library simply extend one of the two above classes based on your requirements:
 
