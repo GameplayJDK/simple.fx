@@ -15,7 +15,11 @@ The library only contains two classes which makes its size only about `4kb`.
 
 For that just download the latest release and add the jar to your project as a library.
 
+Of course you are free to clone the repo and build it yourself.
+
 ## How to use it?
+
+**Please also read the section with other important infotmation below!**
 
 To use the library simply extend one of the two above classes based on your requirements:
 
@@ -138,9 +142,9 @@ While you can set it when calling the super constructor you can be lazy and leav
 
 ## Is there anything else important?
 
-**Notice that it's required to start loading the layout via `new MyController()`! If not, the default `FXMLLoader` will be used which will result in an `javafx.fxml.LoadException` stating `Controller value already specified.`!**
+**Notice that it's required to start loading the layout via `new MyController()`!** If not, the default `FXMLLoader` will be used which will result in an `javafx.fxml.LoadException` stating `Controller value already specified.`!
 
-You should also make sure that in controllers that are only referenced in fxml set their view manually in their `initialize()` method using `setView(view)`. Otherwise a NPE will be thrown when you try to access the view using `getView()`.
+You should also make sure that in controllers that are only referenced in fxml you set their view manually in the `initialize()` method using `setView(view)`. Otherwise a NPE will be thrown when you try to access the view using `getView()`.
 
 **Also be aware of the fact, that due to JavaFx internal processing the `initialize()` method will be called BEFORE the constructor is completely executed!**
 The problem here is that, if you plan to set class variables in the constructor, you will only be able to access them AFTER `initialize()` has been called. Therefor it will be called TWICE, once before and once after the class is ready. You can use `isReady()` to determine whether that's the case.
@@ -149,3 +153,7 @@ The problem here is that, if you plan to set class variables in the constructor,
 
 The library uses an enhanced controller factory for the `FXMLLoader` that distinguishes between the simple.fx JavaFx controller that triggered the loading, sub-classes of the simple.fx JavaFx controller and other controllers.
 That enables it to use a different instantiation technique for each of them.
+
+## And the license?
+
+It's MIT.
