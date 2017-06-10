@@ -25,6 +25,8 @@
 
 package de.gameplayjdk.simplefx;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 
@@ -33,7 +35,7 @@ import javafx.scene.Parent;
  */
 public class BaseController<V extends Parent, M> extends Controller<V> {
 
-    private M main;
+    private ObjectProperty<M> main;
 
     public BaseController() {
         super();
@@ -46,7 +48,7 @@ public class BaseController<V extends Parent, M> extends Controller<V> {
     public BaseController(M main, String name) {
         super(name);
 
-        this.main = main;
+        this.main = new SimpleObjectProperty<M>(main);
 
         super.setReady();
     }
@@ -57,14 +59,18 @@ public class BaseController<V extends Parent, M> extends Controller<V> {
     }
 
     public M getMain() {
-        if (this.main == null) {
+        if (this.main.get() == null) {
             throw new NullPointerException("Main is null. Please set it manually in your " + this.getClass().getSimpleName() + " controller");
         }
 
+        return this.main.get();
+    }
+
+    public ObjectProperty<M> mainProperty() {
         return this.main;
     }
 
     public void setMain(M main) {
-        this.main = main;
+        this.main.set(main);
     }
 }

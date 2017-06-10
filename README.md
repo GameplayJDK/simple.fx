@@ -134,6 +134,8 @@ public class MyMain extends Application {
 
 ```
 
+Notice that it's possible to use bindings and other JavaFx features on the `main` property of `BaseController` since v1.1.
+
 ### Some more details please!
 
 Ok, so there is some hidden magic with the name of the fxml file.
