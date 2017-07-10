@@ -113,22 +113,12 @@ public class MyMain extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-
-        Platform.exit();
     }
     
     // ...
     
     public static void main(String[] args) {
         Application.launch(MyMain.class, args);
-    }
-    
-    public static MyMain getInstance() {
-        if (MyMain.instance == null) {
-            MyMain.instance = new MyMain();
-        }
-        
-        return MyMain.instance;
     }
 }
 
@@ -141,6 +131,10 @@ Notice that it's possible to use bindings and other JavaFx features on the `main
 Ok, so there is some hidden magic with the name of the fxml file.
 
 While you can set it when calling the super constructor you can be lazy and leave the name empty, like `""`, or leave it null which will default the name to the controller class name minus the `Controller` part. E.g. a controller named `xController` will try to load the file `x.fxml` if not being told another name. But in any case be sure to leave out the `.fxml` extension.
+
+The name also controls the name of the associated bundle, which means the bundle will be named `xBundle`, when the controller is named `xController`. Bundles are supported since v1.2.
+
+The preferred locale can be set using the static method `setLocale` of the `Controller` class.
 
 ## Is there anything else important?
 

@@ -53,7 +53,6 @@ public class BaseController<V extends Parent, M> extends Controller<V> {
         super.setReady();
     }
 
-    @FXML
     @Override
     protected void initialize() {
     }

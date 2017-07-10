@@ -33,6 +33,8 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Created by GameplayJDK on 20.05.2017.
@@ -40,6 +42,8 @@ import java.lang.reflect.InvocationTargetException;
 public abstract class Controller<V extends Parent> {
 
     private boolean ready;
+
+    private static Locale locale = Locale.ROOT;
 
     private V view;
 
@@ -61,20 +65,58 @@ public abstract class Controller<V extends Parent> {
         this.view = this.getView(name);
     }
 
-    @FXML
     protected abstract void initialize();
 
-    private V getView(String name) {
-        if (((name == null) ? "" : name).isEmpty()) {
-            name = this.getClass().getSimpleName();
-            name = name.substring(0, name.length() - "Controller".length());
+    private String getSimpleName(String name) {
+        if (name == null) {
+            name = "";
         }
 
-        name = name + ".fxml";
+        name = name.trim();
+
+        if (name.isEmpty()) {
+            name = this.getClass().getSimpleName();
+        }
+
+        if (name.endsWith("Controller")) {
+            name = name.substring(0, (name.length() - "Controller".length()));
+        }
+
+        return name;
+    }
+
+    private String getCanonicalName(String name) {
+        if (name == null) {
+            name = "";
+        }
+
+        name = name.trim();
+
+        if (name.isEmpty()) {
+            name = this.getSimpleName(name);
+        }
+
+        String canonicalName = this.getClass().getCanonicalName();
+        canonicalName = canonicalName.substring(0, (canonicalName.length() - this.getClass().getSimpleName().length()));
+        canonicalName = canonicalName + name;
+
+        return canonicalName;
+    }
+
+    private V getView(String name) {
+        name = this.getSimpleName(name);
+
+        String fxmlResource = name + ".fxml";
+
+        String bundleName = this.getCanonicalName(name);
+        bundleName = bundleName + "Bundle";
 
         try {
+            ResourceBundle resourceBundle = ResourceBundle.getBundle(bundleName, Controller.locale);
+
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(this.getClass().getResource(name));
+            fxmlLoader.setLocation(this.getClass().getResource(fxmlResource));
+            fxmlLoader.setResources(resourceBundle);
             fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
                 @Override
                 public Object call(Class<?> parameter) {
@@ -118,7 +160,7 @@ public abstract class Controller<V extends Parent> {
             });
 
             return fxmlLoader.load();
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             ex.printStackTrace();
         }
 
@@ -136,6 +178,14 @@ public abstract class Controller<V extends Parent> {
 
         this.ready = true;
         this.initialize();
+    }
+
+    public static Locale getLocale() {
+        return Controller.locale;
+    }
+
+    public static void setLocale(Locale locale) {
+        Controller.locale = locale;
     }
 
     public V getView() {
