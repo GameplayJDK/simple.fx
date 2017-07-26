@@ -27,7 +27,6 @@ package de.gameplayjdk.simplefx;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.fxml.FXML;
 import javafx.scene.Parent;
 
 /**
